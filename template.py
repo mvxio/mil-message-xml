@@ -13,7 +13,7 @@ OPTIONS = 'options.txt'
 def _parse_options_from_csv(csv_filename):
     return {
         k.strip(): v.strip() for _, _, k, v in (
-            line.split(';', 3) for line in open(csv_filename) if line.strip()
+            line.split(';', 3) for line in open(csv_filename, encoding='utf-8') if line.strip()
         )
     }
 
@@ -21,29 +21,29 @@ def _parse_options_from_csv(csv_filename):
 def _parse_options_from_txt():
     return {
         k.strip(): v.strip() for k, v in (
-            line.split('=', 1) for line in open(OPTIONS) if not line.startswith('#') and line.strip()
+            line.split('=', 1) for line in open(OPTIONS, encoding='utf-8') if not line.startswith('#') and line.strip()
         )
     }
 
 
 def _apply_tempalates(options):
     message_template_filepath = os.path.join(TEMPLATE_DIR, MESSAGE_TEMPLATE)
-    with open(message_template_filepath) as message_template:
+    with open(message_template_filepath, encoding='utf-8') as message_template:
         message_content = message_template.read()
     
     for k, v in options.items():
         message_content = message_content.replace(k, v, 1)
 
-    with open(MESSAGE, 'w+') as dest_file:
+    with open(MESSAGE, 'w+', encoding='utf-8') as dest_file:
         dest_file.write(message_content)
 
 
 def _copy_options_template():
     options_template_filepath = os.path.join(TEMPLATE_DIR, OPTIONS_TEMPLATE)
-    with open(options_template_filepath) as options_template:
+    with open(options_template_filepath, encoding='utf-8') as options_template:
         options_content = options_template.read()
 
-    with open(OPTIONS, 'w+') as dest_file:
+    with open(OPTIONS, 'w+', encoding='utf-8') as dest_file:
         dest_file.write(options_content)
 
 
